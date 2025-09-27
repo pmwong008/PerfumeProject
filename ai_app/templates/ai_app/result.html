@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_style %}
+<link rel="stylesheet" href="{% static 'ai_app/css/result.css'%}">
+{% endblock %}
+{% block title %}Results by AI{% endblock %}
+{% block body_content %}
+   <div class="row row-cols-1 row-cols-md-4 g-4">
+  {% for p in perfumes %}
+  <div class="col item">
+    <div class="card">
+      <a href="{% url 'perfume_app:perfume_detail' p.pk %}">
+        <img src="https://fimgs.net/mdimg/perfume-thumbs/375x500{{ p.image }}" class="card-img-top img-fluid" alt="{{ p.name }}">
+      </a>
+      <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'perfume_app:perfume_detail' p.pk %}">{{ p.brand }}</a></h5>
+        <p class="card-text"><a href="{% url 'perfume_app:perfume_detail' p.pk %}">{{ p.name }}</a></p>
+        <a href="{% url 'ai_app:confirm' %}?perfume_id={{ p.pk }}" class="btn btn-primary btn-sm get-sample-btn">Get sample</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{%  endblock %}
+{% block body_script %}
+  <script src="{% static 'ai_app/js/result.js'%}"></script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_style %}
+<link rel="stylesheet" href="{% static 'admin_app/css/signup.css' %}">
+{% endblock %}
+{% block title %}Sign up{% endblock %}
+{% block body_content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}" class="btn btn-secondary btn-sm">Login</a></p>
+{% endblock %}

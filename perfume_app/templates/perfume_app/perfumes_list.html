@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_style %}
+<link rel="stylesheet" href="{% static 'perfume_app/css/perfumes_list.css' %}">
+{% endblock %}
+{% block title %}Perfume List{% endblock %}
+{% block body_content %}
+  <form method="get" action="{% url 'perfume_app:perfumes_list' %}" id="searchForm">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          data-bs-auto-close="outside">
+        Search by brand and notes
+      </button>
+       <button type="button" class="btn btn-outline-secondary ms-2" id="clearCheckboxes">
+        Clear All
+      </button>
+      {% if q %}
+        <h4>Your search result of "{{ q }}" : <span>{{perfumes.paginator.count}}</span></h4>
+      {% endif %}
+
+      <div class="dropdown-menu p-3 custom-dropdown-menu" style="width: 70%; max-height: 600px; overflow-y: auto;">
+        <div class="container-fluid p-0 mb-3">
+          <strong>Brands</strong>
+          <div class="row mt-2 gx-2">
+            {% for brand in all_brands %}
+              <div class="col-6 col-md-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="brand" value="{{ brand }}" id="brand{{ forloop.counter }}"
+                    {% if brand in selected_brands %}checked{% endif %}>
+                  <label class="form-check-label" for="brand{{ forloop.counter }}">{{ brand }}</label>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="container-fluid p-0">
+          <strong>Notes</strong>
+          <div class="row mt-2 gx-2">
+            {% for note in all_notes %}
+              <div class="col-6 col-md-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="note" value="{{ note }}" id="note{{ forloop.counter }}"
+                    {% if note in selected_notes %}checked{% endif %}>
+                  <label class="form-check-label" for="note{{ forloop.counter }}">{{ note }}</label>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+{% if no_results %}
+  <div class="alert alert-warning mt-3">
+    No perfume was found
+  </div>
+{% endif %}
+
+  <!-- 香水表 -->
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    {% for p in perfumes %}
+    <div class="col item">
+      <div class="card">
+        <a href="{% url 'perfume_app:perfume_detail' p.pk %}">
+          <img src="https://fimgs.net/mdimg/perfume-thumbs/375x500{{p.image}}" class="card-img-top img-fluid" alt="{{ p.name}}">
+        </a>
+        <div class="card-body">
+          <h5 class="card-title"><a href="{% url 'perfume_app:perfume_detail' p.pk %}">{{ p.brand }}</a></h5>
+          <p class="card-text"><a href="{% url 'perfume_app:perfume_detail' p.pk %}">{{ p.name }}</a></p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- 分頁控制 -->
+  <div class="pagination">
+    {% if perfumes.has_previous %}
+      <a href="?page={{ perfumes.previous_page_number }}{% for b in selected_brands %}&brand={{ b }}{% endfor %}{% for n in selected_notes %}&note={{ n }}{% endfor %}">previous</a>
+    {% endif %}
+
+    {% if perfumes.number > 4 %}
+      <a href="?page=1{% for b in selected_brands %}&brand={{ b }}{% endfor %}{% for n in selected_notes %}&note={{ n }}{% endfor %}">1</a>
+      <span>...</span>
+    {% endif %}
+
+    {% for num in perfumes.paginator.page_range %}
+      {% if num >= perfumes.number|add:-2 and num <= perfumes.number|add:2 %}
+        {% if num == perfumes.number %}
+          <span><strong>{{ num }}</strong></span>
+        {% else %}
+          <a href="?page={{ num }}{% for b in selected_brands %}&brand={{ b }}{% endfor %}{% for n in selected_notes %}&note={{ n }}{% endfor %}">{{ num }}</a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {% if perfumes.number < perfumes.paginator.num_pages|add:-3 %}
+      <span>...</span>
+      <a href="?page={{ perfumes.paginator.num_pages }}{% for b in selected_brands %}&brand={{ b }}{% endfor %}{% for n in selected_notes %}&note={{ n }}{% endfor %}">{{ perfumes.paginator.num_pages }}</a>
+    {% endif %}
+
+    {% if perfumes.has_next %}
+      <a href="?page={{ perfumes.next_page_number }}{% for b in selected_brands %}&brand={{ b }}{% endfor %}{% for n in selected_notes %}&note={{ n }}{% endfor %}">next</a>
+    {% endif %}
+    <span> Total: {{ perfumes.paginator.count }} </span>
+  </div>
+
+{% endblock %}
+{% block body_script %}
+  <script src="{% static 'perfume_app/js/perfumes_list.js'%}"></script>
+{% endblock %}

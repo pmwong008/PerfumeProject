@@ -1,0 +1,13 @@
+.center-container {
+  height: 100vh; /* 可視高度80%調整 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 縱向置中 */
+  align-items: center;     /* 橫向置中 */
+  text-align: center;      /* 文字置中 */
+}
+#countdown-number{
+    color: blue;
+    font-weight: bold;
+}
+

@@ -1,0 +1,162 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.content{
+    width: 80%;
+    margin: 10px auto;
+    position: relative;
+    min-height: 100vh;
+    z-index: 1;
+}
+
+ul{
+    list-style-type: none;
+    font-size: 20px;
+}
+
+
+header{
+    background-color: #ece2ccad;
+    width: 100%;
+    padding: 0 5%;
+    display :flex;
+    justify-content: space-between;   /*首元素靠左，末元素靠右，中間元素自動分配剩餘空間。 */
+    align-items: center;
+    color: #4169e1;
+}
+
+#colorPanel {
+  position: fixed;
+  top: 80px;
+  left: -200px; /* 預設隱藏在左側畫面外 */
+  width: 200px;
+  height: auto;
+  background: #f0f0f0;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  transition: left 0.3s ease;
+  padding: 20px;
+  z-index: 999;
+}
+
+#colorButtons {
+  display: block;
+}
+
+.color-btn {
+  width: 150px;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.2;         /* 暗淡 */
+  transition: opacity 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 10px;
+  display: block;
+}
+.color-btn:hover {
+  opacity: 1;                             /* 變亮 */
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);  /* 加陰影增加光感 */
+}
+.default-btn{
+  width: 150px;
+  height: 40px;
+  border: 1px solid #000000;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: block;
+  color:#4169e1;
+  font-weight: bold;
+}
+.default-btn:hover {
+  color: #ff7f50;            /* 滑鼠懸停時文字變色 */
+}
+
+.nav-menu{
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+}
+
+.nav-menu li{
+    margin: 0 10px;
+    align-items: center;
+
+}
+.dropdown{
+    align-items: center;
+}
+
+a:link{
+    text-decoration: none;
+}
+
+a:hover{
+    color:#ff7f50;
+}
+
+/* search bar */
+.search-input {
+  width: 300px;
+  height: 36px;
+  padding-left: 40px;
+  border: 1px solid #7d7d7d;
+  border-radius: 18px;
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="gray" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8" stroke="gray" stroke-width="2" fill="none"/><line x1="20" y1="20" x2="16.65" y2="16.65" stroke="gray" stroke-width="2" stroke-linecap="round"/></svg>') no-repeat 13px center;
+  background-size: 16px 16px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+}
+
+.dropdown-menu {
+   text-align: center;
+   margin-top: 20px;
+   width: 250px;
+   background-color: #e9ecef;
+}
+
+.dropdown-menu > li > a {
+  font-size: 20px;           /* 調整字體大小 */
+  color: #4169e1;            /* 文字顏色 */
+  font-weight: bold;         /* 可選：文字加粗 */
+}
+
+.dropdown-menu > li > a:hover {
+  color: #ff7f50;            /* 滑鼠懸停時文字變色 */
+  background-color: #5654a2; /* 背景色調整，增加互動感 */
+}
+.scroll-top{
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 100;
+}
+
+footer{
+    background-color: #ece2ccad;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.sns-icons{
+    width: 100%;
+}
+
+.sns-icons img{
+    margin: 20px;
+    vertical-align: middle;
+}
+
+

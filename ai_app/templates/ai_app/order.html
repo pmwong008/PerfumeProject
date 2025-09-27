@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'ai_app/css/order.css'%}">
+    <link rel="icon" href="{% static 'images/logo.png' %}" type="image/png" />
+    <title>Scent φ - Sample Order successfully</title>
+</head>
+<body>
+    <div class="center-container">
+        <h1>Sample Order successfully</h1>
+        <img src="{% static 'ai_app/images/present.png'%}" alt="open_present" width="500px">
+        <h2>We will send the sample to you within 2-3 working days</h2>
+        <!-- 倒數提示 -->
+        <h3 id="countdown-text" data-url="{% url 'perfume_app:index' %}">Redirecting to Homepage in <span id="countdown-number">5</span> seconds...</h3>
+    </div>
+    <script src="{% static 'ai_app/js/order.js'%}"></script>
+</body>
+</html>

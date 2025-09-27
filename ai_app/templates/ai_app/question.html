@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_style %}
+<link rel="stylesheet" href="{% static 'ai_app/css/question.css'%}">
+{% endblock %}
+{% block title %}Questions to AI{% endblock %}
+{% block body_content %}
+    <form class="form" action="{% url 'ai_app:result' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-header">
+        <h2>Question</h2>
+        <div>
+            <p>Which gender do you identify as?</p>
+            <label for="gender1">
+            <input type="radio" name="gender" id="gender1" value="Female">Female
+            </label>
+            <label for="gender2">
+            <input type="radio" name="gender" id="gender2" value="Male">Male
+            </label>
+            <label for="gender3">
+            <input type="radio" name="gender" id="gender3" value="Unisex" >Unisex
+            </label>
+        </div>
+        <div>
+            <p>When do you like to wear fragrance? (You can choose more than one)</p>
+            <label for ="time1">
+                <input type="checkbox" name="time[]" id="time1" value="Daytime">Daytime
+            </label>
+            <label for ="time2">
+                <input type="checkbox" name="time[]" id="time2" value="Evening">Evening
+            </label>
+
+        </div>
+        <div>
+            <p>Which season(s) do you prefer to wear ? (You can choose more than one)</p>
+            <label for ="season1">
+                <input type="checkbox" name="season[]" id="season1" value="Spring">Spring
+            </label>
+            <label for ="season2">
+                <input type="checkbox" name="season[]" id="season2" value="Summer">Summer
+            </label>
+            <label for ="season3">
+                <input type="checkbox" name="season[]" id="season3" value="Autumn">Autumn
+            </label>
+            <label for ="season4">
+                <input type="checkbox" name="season[]" id="season4" value="Winter">Winter
+            </label>
+
+        </div>
+        <div>
+            <p>Longevity</p>
+            <label for="longevity1">
+            <input type="radio" name="longevity" id="longevity1" value="longevity:very weak">very weak
+            </label>
+            <label for="longevity2">
+            <input type="radio" name="longevity" id="longevity2" value="longevity:weak">weak
+            </label>
+            <label for="longevity3">
+            <input type="radio" name="longevity" id="longevity3" value="longevity:moderate" >moderate
+            </label>
+            <label for="longevity4">
+            <input type="radio" name="longevity" id="longevity4" value="longevity:long lasting" >long lasting
+            </label>
+            <label for="longevity5">
+            <input type="radio" name="longevity" id="longevity5" value="longevity:eternal" >eternal
+            </label>
+        </div>
+        <div>
+            <p>Sillage</p>
+            <label for="sillage1">
+            <input type="radio" name="sillage" id="sillage1" value="sillage:intimate">intimate
+            </label>
+            <label for="sillage2">
+            <input type="radio" name="sillage" id="sillage2" value="sillage:moderate">moderate
+            </label>
+            <label for="sillage3">
+            <input type="radio" name="sillage" id="sillage3" value="sillage:strong" >strong
+            </label>
+            <label for="sillage4">
+            <input type="radio" name="sillage" id="sillage4" value="sillage:enormous" >enormous
+            </label>
+        </div>
+
+
+        <div>
+            <button type="submit" id="submit">Recommend Perfumes</button>
+        </div>
+        </div>
+    </form>
+
+{%  endblock %}

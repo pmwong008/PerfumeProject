@@ -1,0 +1,46 @@
+.row.align-items-start{
+    margin-top: 50px
+}
+
+.perfume-image img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: #555;
+    letter-spacing: 1px;
+}
+
+.perfume-name {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #222;
+}
+
+.svg-option {
+  cursor: pointer;
+  fill: grey;
+  stroke: transparent;
+  stroke-width: 0.5px;
+  transition: all 0.3s ease;
+  margin-top: 30px;
+  margin-bottom: 50px;
+
+}
+.svg-option.selected {
+  fill: #007bff; /* 藍色 */
+  stroke: #0056b3; /* 藍色深邃邊框 */
+  border-radius: 8px;
+  box-shadow: 0 0 12px #1e90ff;
+}
+
+
+#submit-btn{
+    margin-top:50px;
+    width:50%;
+}

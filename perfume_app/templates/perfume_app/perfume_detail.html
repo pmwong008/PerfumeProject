@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_style %}
+<link rel="stylesheet" href="{% static 'perfume_app/css/perfume_detail.css'%}">
+{% endblock %}
+{% block title %}Perfume Detail{% endblock %}
+{% block body_content %}
+<div class="container py-4">
+
+  <div class="row mb-4 align-items-start">
+    <!-- Image -->
+    <div class="col-md-6 text-center perfume-image mb-3 mb-md-0">
+      <img src="https://fimgs.net/mdimg/perfume-thumbs/375x500{{ perfume.image }}"
+           alt="{{ perfume.name }}"
+           class="img-fluid rounded shadow-sm"
+           style="max-width: 375px; height: 500px; object-fit: cover;">
+    </div>
+
+    <!-- Info -->
+    <div class="col-md-6 perfume-details">
+      <h5 class="text-secondary fw-semibold">{{ perfume.brand }}</h5>
+      <h2 class="fw-bold mb-4">{{ perfume.name }}</h2>
+
+       <h5 class="fw-semibold">Accords :</h5>
+        <ul class="list-group list-group-flush">
+            {% if is_list %}
+              {% for accord in perfume.main_accords %}
+              <li class="list-group-item p-1 ps-0">{{ accord }}</li>
+              {% endfor %}
+            {% endif %}
+        </ul>
+        <!-- Total stars -->
+        <div>
+          <strong>Average Rating:</strong>
+          <span style="color: gold; font-size: 1.5rem;">
+            {% for i in star_range %}
+              {% if i <= avg_whole %}
+                &#9733;
+              {% elif avg_half and i == avg_whole|add:"1" %}
+                <span style="position: relative; display: inline-block; color: gold; font-size: 1.5rem;">
+                  <span style="position: absolute; width: 50%; overflow: hidden; white-space: nowrap;">&#9733;</span>
+                  <span style="color: lightgray;">&#9734;</span>
+                </span>
+              {% else %}
+                &#9734;
+              {% endif %}
+            {% endfor %}
+          </span>
+          <strong>({{ avg_whole }}{% if avg_half %}.5{% endif %})</strong>
+        </div>
+
+        <a href="{% url 'ai_app:confirm' %}?perfume_id={{ perfume.pk }}" class="btn btn-primary" id="get_sample">Get sample</a>
+
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="row mb-4">
+    <div class="col-12 perfume-notes">
+      {% if is_dict %}
+        <h6 class="fw-semibold">Top Notes:</h6>
+        <ul class="mb-3 list-group list-group-flush">
+          {% for item in perfume.notes.top %}
+            <li class="list-group-item p-1 ps-0">{{ item }}</li>
+          {% endfor %}
+        </ul>
+
+        <h6 class="fw-semibold">Middle Notes:</h6>
+        <ul class="mb-3 list-group list-group-flush">
+          {% for item in perfume.notes.middle %}
+            <li class="list-group-item p-1 ps-0">{{ item }}</li>
+          {% endfor %}
+        </ul>
+
+        <h6 class="fw-semibold">Base Notes:</h6>
+        <ul class="mb-3 list-group list-group-flush">
+          {% for item in perfume.notes.base %}
+            <li class="list-group-item p-1 ps-0">{{ item }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <h5 class="fw-semibold">Notes:</h5>
+        <ul class="list-group list-group-flush">
+          {% for item in perfume.notes %}
+            <li class="list-group-item p-1 ps-0">{{ item }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- review post -->
+<div class="review-list">
+  {% for review in reviews %}
+  <div class="review-item border rounded p-3 mb-3 d-flex gap-3" id="review_post">
+
+    <div style="width: 140px; text-align: center;">
+      <img src="{{ review.user.avatar.url }}" alt="{{ review.user.username }}" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+      <div class = "username">{{ review.user.username }}</div>
+      <small class="text-muted">{{ review.created_at|date:"Y-m-d H:i" }}</small>
+    </div>
+
+    <div class="flex-grow-1" style="font-size:18px;">
+      <div class="row mb-2">
+         <div class="col-12 mb-1">
+          {% if review.perfume.id in order_perfume_ids %}
+            <span class="badge bg-primary" style="font-size: 0.85rem;">Got Sample</span>
+          {% else %}
+            <span class="badge bg-success" style="font-size: 0.85rem;">Owner/User</span>
+          {% endif %}
+        </div>
+        <div class="col-4"><strong>Gender:</strong> {{ review.gender }}</div>
+        <div class="col-4"><strong>Price:</strong> {{ review.price_value }}</div>
+        <div class="col-4"><strong>Longevity:</strong> {{ review.longevity }}</div>
+
+        <div class="col-4"><strong>Sillage:</strong> {{ review.sillage }}</div>
+        <div class="col-4"><strong>Season:</strong> {{ review.season }}</div>
+        <div class="col-4 d-flex align-items-center">
+          <strong>Rating:</strong>
+          <span class="ms-2" style="color: gold; font-size: 1.5rem;">
+            {% for i in star_range %}
+              {% if i <= review.rating %}
+                &#9733;
+              {% else %}
+                &#9734;
+              {% endif %}
+            {% endfor %}
+          </span>
+        </div>
+      </div>
+      <div>
+        <textarea rows="4" cols="110" readonly>{{ review.content }}</textarea>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="no_review">
+  No reviews for this perfume yet.
+  </div>
+  {% endfor %}
+</div>
+
+
+
+<!--review submit-->
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'perfume_app:submit_review' perfume.pk %}" class="d-flex gap-3 p-3 border rounded" x-data="{ rating: 0 }" id="review_form">
+  {% csrf_token %}
+
+  <!-- 用戶頭像與名稱 -->
+  <div class="user-info text-center" style="width: 100px;">
+    <img src="{{ request.user.avatar.url }}" alt="{{ request.user.username }}" class="rounded-circle img-fluid mb-2" style="width: 80px; height: 80px; object-fit: cover;">
+    <div class = "username">{{ request.user.username }}</div>
+  </div>
+
+  <!-- 評價主區 -->
+  <div class="flex-grow-1">
+
+    <div class="row g-2 mb-3" style="align-items: flex-end;">
+      <div class="col-4">
+        <label for="id_gender" class="form-label small">Gender</label>
+        <select id="id_gender" name="gender" class="form-select form-select-sm" required>
+          <option value="" selected disabled>Select gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="unisex">Unisex</option>
+        </select>
+      </div>
+
+      <div class="col-4">
+        <label for="id_price_value" class="form-label small">Price value</label>
+        <select id="id_price_value" name="price_value" class="form-select form-select-sm" required>
+          <option value="" selected disabled>Select Price value</option>
+          <option value="good">Good</option>
+          <option value="ok">Ok</option>
+          <option value="overpriced">Overpriced</option>
+        </select>
+      </div>
+
+      <div class="col-4 d-flex flex-column">
+        <label class="form-label small mb-1">Rating</label>
+        <div style="font-size: 1.6rem; user-select:none;">
+          <template x-for="star in 5" :key="star">
+            <span class="star"
+              :class="rating >= star ? 'text-warning' : 'text-muted'"
+              @click="rating = star"
+              style="cursor: pointer;">&#9733;</span>
+          </template>
+          <input type="hidden" name="rating" :value="rating" required />
+        </div>
+      </div>
+
+      <div class="col-4 mt-2">
+        <label for="id_longevity" class="form-label small">Longevity</label>
+        <select id="id_longevity" name="longevity" class="form-select form-select-sm" required>
+          <option value="" selected disabled>Select Longevity</option>
+          <option value="very weak">Very weak</option>
+          <option value="weak">Weak</option>
+          <option value="moderate">Moderate</option>
+          <option value="long lasting">Long lasting</option>
+          <option value="eternal">Eternal</option>
+        </select>
+      </div>
+
+      <div class="col-4 mt-2">
+        <label for="id_sillage" class="form-label small">Sillage</label>
+        <select id="id_sillage" name="sillage" class="form-select form-select-sm" required>
+          <option value="" selected disabled>Select Sillage</option>
+          <option value="intimate">Intimate</option>
+          <option value="moderate">Moderate</option>
+          <option value="strong">Strong</option>
+          <option value="enormous">Enormous</option>
+        </select>
+      </div>
+
+      <div class="col-4 mt-2">
+        <label for="id_season" class="form-label small">Season</label>
+        <select id="id_season" name="season" class="form-select form-select-sm" required>
+          <option value="" selected disabled>Select Season</option>
+          <option value="spring">Spring</option>
+          <option value="summer">Summer</option>
+          <option value="autumn">Autumn</option>
+          <option value="winter">Winter</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label for="comment_content" class="form-label">Your comment</label>
+      <textarea id="comment_content" name="comment" rows="4" class="form-control" placeholder="Write your comment here..." required></textarea>
+    </div>
+  </div>
+
+  <!-- 提交按鈕 -->
+  <div class="d-flex align-items-end">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+
+</form>
+{% endif %}
+
+{% endblock %}
+{% block body_script %}
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="{% static 'perfume_app/js/perfume_detail.js'%}"></script>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Your Profile{% endblock %}
+{% block head_style %}
+<style>
+.list-group-item {
+  margin-bottom: 1rem; /* 增加行間距 */
+}
+</style>
+{% endblock %}
+{% block body_content %}
+
+
+<div class="container mt-4">
+
+  <div class="row align-items-center mb-4">
+
+    {% if user.is_authenticated %}
+    <div class="col-md-4 text-center">
+            <img src="{{ user.avatar.url }}" alt="User Avatar" class="img-thumbnail" style="width: 400px; ">
+    </div>
+
+    <!-- 右邊 用戶資訊 -->
+    <div class="col-md-8">
+      <h3><strong>Username:</strong> {{ user.username }}</h3>
+      <h5><strong>Points:</strong> {{ profile.points }}</h5>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label for="email" >Email</label>
+        <input type="email" name="email" id="email" class="form-control" value="{{ email }}">
+
+        <label for="name" style="margin-top:10px">Name</label>
+        <input type="text" name="name" id="name" class="form-control" value="{{ name }}">
+
+        <label for="address" style="margin-top:10px">Address</label>
+        <input type="text" name="address" id="address" class="form-control" value="{{ address }}">
+
+        <label for="avatar" style="margin-top:10px">Avatar</label>
+        <input type="file" name="avatar" id="avatar" class="form-control-file"></br>
+
+        <button type="submit" class="btn btn-primary mt-3" style="margin-top:10px">Update</button>
+      </form>
+
+    </div>
+  </div>
+  {% endif %}
+
+  <h4><strong>Sample History</strong></h4>
+
+  <!-- 下半部  -->
+  <div class="row">
+    <div class="col-md-4">
+      <h5>Brand</h5>
+      <!-- 用迴圈列出品牌 -->
+      <ul class="list-group">
+        {% for order in orders %}
+        <li class="list-group-item">{{ order.perfume_brand }}</li>
+        {% empty %}
+        <li class="list-group-item">-</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-md-4">
+      <h5>Perfume Name</h5>
+      <ul class="list-group">
+        {% for order in orders %}
+        <li class="list-group-item">{{ order.perfume_name }}</li>
+        {% empty %}
+        <li class="list-group-item">-</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-md-4">
+      <h5>Action</h5>
+      <div>
+        {% for order in orders %}
+          <div class="list-group-item d-flex align-items-center justify-content-start" style="height: 48px; width: 150px;">
+            {% if order.has_reviewed %}
+              <a href="{% url 'perfume_app:perfume_detail' order.perfume_id %}">
+                <button type="button" class="btn btn-secondary w-100">Detail</button>
+              </a>
+            {% else %}
+              <a href="{% url 'perfume_app:perfume_detail' order.perfume_id %}#review_form">
+                <button type="button" class="btn btn-primary w-100">Comment</button>
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

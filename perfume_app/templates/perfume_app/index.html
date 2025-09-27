@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_style %}
+<link rel="stylesheet" href="{% static 'perfume_app/css/index.css'%}">
+{% endblock %}
+{% block title %}HomePage{% endblock %}
+{% block body_content %}
+    <h2>
+      <div class="slide">
+          <div class="slide-container">
+              <div class="slides">
+                  <img src="{% static 'perfume_app/images/perfume1.png' %}" class="active">
+                  <img src="{% static 'perfume_app/images/perfume2.png' %}">
+                  <img src="{% static 'perfume_app/images/perfume3.png' %}">
+                  <img src="{% static 'perfume_app/images/perfume4.jpeg' %}">
+              </div>
+
+              <div class="buttons">
+                  <span class="next">&#10095;</span>
+                  <span class="prev">&#10094;</span>
+              </div>
+
+              <div class="dotsContainer">
+                  <div class="dot active" attr='0' onclick="switchImage(this)"></div>
+                  <div class="dot" attr='1' onclick="switchImage(this)"></div>
+                  <div class="dot" attr='2' onclick="switchImage(this)"></div>
+                  <div class="dot" attr='3' onclick="switchImage(this)"></div>
+                  <div class="dot" attr='4' onclick="switchImage(this)"></div>
+              </div>
+          </div>
+      </div>
+    </h2>
+    <div class="image-container" style="display: flex; flex-wrap: wrap; justify-content: center;">
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Chanel">
+            <img src="{% static 'perfume_app/images/chanel.png' %}" width="300" height="300" alt="Chanel logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Christian Dior">
+            <img src="{% static 'perfume_app/images/dior.jpg' %}" width="300" height="300" alt="Dior logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Creed">
+            <img src="{% static 'perfume_app/images/creed.jpg' %}" width="300" height="300" alt="Creed logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Diptyque">
+            <img src="{% static 'perfume_app/images/Diptyque.png' %}" width="300" height="300" alt="Diptyque logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Parfums de Marly">
+            <img src="{% static 'perfume_app/images/parfums_de_marly.jpg' %}" width="300" height="300" alt="parfums de marly logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Hermes">
+            <img src="{% static 'perfume_app/images/Hermes.png' %}" width="300" height="300" alt="Hermes logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Jo Malone">
+            <img src="{% static 'perfume_app/images/jo_malone.jpg' %}" width="300" height="300" alt="Jo Malone logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Le Labo">
+            <img src="{% static 'perfume_app/images/le_labo.png' %}" width="300" height="300" alt="Le Labo logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Maison Martin Margiela">
+            <img src="{% static 'perfume_app/images/Maison_Margiela.png' %}" width="300" height="300" alt="Maison Margiela logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Frederic Malle">
+            <img src="{% static 'perfume_app/images/Frederic_Malle.jpg' %}" width="300"  alt="Frederic Malle logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Tom Ford">
+             <img src="{% static 'perfume_app/images/Tom_Ford.jpg' %}" width="300" height="300" alt="Tom Ford logo">
+        </a>
+        <a href="{% url 'perfume_app:perfumes_list' %}?perfume_brand=Yves Saint Laurent">
+            <img src="{% static 'perfume_app/images/YSL.png' %}" width="300" height="300" alt="YSL logo">
+        </a>
+    </div>
+{%  endblock %}
+{% block body_script %}
+<script src="{% static 'js/index.js'%}"></script>
+{% endblock %}
